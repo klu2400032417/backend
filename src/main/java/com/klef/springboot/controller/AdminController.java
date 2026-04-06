@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.klef.springboot.entity.Admin;
 import com.klef.springboot.entity.Donor;
@@ -18,128 +19,118 @@ import com.klef.springboot.entity.LogisticsCoordinator;
 import com.klef.springboot.entity.Recipient;
 import com.klef.springboot.service.AdminService;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
-
-
 @RestController
 @RequestMapping("adminapi")
 @CrossOrigin("*")
 public class AdminController 
 {
 	@Autowired
-  private AdminService adminService;
+    private AdminService adminService;
   
-  @GetMapping("/")
-  public String index()
-  {
-    return "Full Stack SDP Project";
-  }
-  
-  @PostMapping("/login")
-  public ResponseEntity<?> checkadminlogin(@RequestBody Admin admin)
-  {
-    try
+    @GetMapping("/")
+    public String index()
     {
-      Admin a = adminService.verifyAdminLogin(admin.getUsername(), admin.getPassword());
+        return "Full Stack SDP Project";
+    }
+  
+    @PostMapping("/login")
+    public ResponseEntity<?> checkadminlogin(@RequestBody Admin admin)
+    {
+        try
+        {
+            Admin a = adminService.verifyAdminLogin(admin.getUsername(), admin.getPassword());
     
-        if(a!=null)
-        {
-          return ResponseEntity.status(200).body(admin);
+            if(a!=null)
+            {
+                return ResponseEntity.status(200).body(admin);
+            }
+            else
+            {
+                return ResponseEntity.status(401).body("Login Invalid");
+            }
         }
-        else
+        catch (Exception e) 
         {
-          return ResponseEntity.status(401).body("Login Invalid");
+            System.out.println(e.getMessage());
+            return ResponseEntity.status(500).body("Internal Server Error");
         }
     }
-    catch (Exception e) 
+  
+    @PostMapping("/addlogisticcoordinator")
+    public ResponseEntity<String> addlogisticcoordinator(@RequestBody LogisticsCoordinator coord)
     {
-      System.out.println(e.getMessage());
-      return ResponseEntity.status(500).body("Internal Server Error");
+        try
+        {
+            String output = adminService.addLogisticsCoordinator(coord);
+            return ResponseEntity.status(201).body(output);
+        }
+        catch(Exception e)
+        {
+            return ResponseEntity.status(500).body("Internal Server Error");
+        }
     }
-  }
   
-  @PostMapping("/addlogisticcoordinator")
-  public ResponseEntity<String> addlogisticcoordinator(@RequestBody LogisticsCoordinator coord)
-  {
-       try
-       {
-         String output = adminService.addLogisticsCoordinator(coord);
-         return ResponseEntity.status(201).body(output);
-       }
-       catch(Exception e)
-       {
-         return ResponseEntity.status(500).body("Internal Server Error");
-       }
-  }
+    @GetMapping("/viewalllogisticscoordinator")
+    public ResponseEntity<?> viewalllogisticscoordinator()
+    {
+        try
+        {
+            List<LogisticsCoordinator> coord = adminService.viewAllLogisticsCoordinator();
+            return ResponseEntity.ok(coord);
+        }
+        catch(Exception e)
+        {
+            return ResponseEntity.status(500).body("Error Fetching Logistic Coordinator");
+        }
+    }
   
-  @GetMapping("/viewalllogisticscoordinator")
-  public ResponseEntity<?> viewalllogisticscoordinator()
-  {
-      try
-      {
-          List<LogisticsCoordinator> coord = adminService.viewAllLogisticsCoordinator();
-          //return ResponseEntity.status(200).body(coord);
-          
-          return ResponseEntity.ok(coord);
-          
-      }
-      catch(Exception e)
-      {
-          return ResponseEntity.status(500).body("Error Fetching Logistic Coordinator");
-      }
-  }
-  
-  
-  @DeleteMapping("/deletelogisticscoordinator/{id}")
-  public ResponseEntity<String> deletelogisticscoordinator(@PathVariable int id)
-  {
-      try
-      {
-          boolean deleted = adminService.deleteLogisticsCoordinator(id);
+    @DeleteMapping("/deletelogisticscoordinator/{id}")
+    public ResponseEntity<String> deletelogisticscoordinator(@PathVariable int id)
+    {
+        try
+        {
+            boolean deleted = adminService.deleteLogisticsCoordinator(id);
 
-          if(deleted)
-          {
-              return ResponseEntity.ok("Logistics Coordinator Deleted Successfully");
-          }
-          else
-          {
-              return ResponseEntity.status(404).body("Logistics Coordinator Not Found");
-          }
-      }
-      catch(Exception e)
-      {
-          // return ResponseEntity.status(500).body("Internal Server Error");
-        return ResponseEntity.status(500).body(e.getMessage());
-      }
-  }
+            if(deleted)
+            {
+                return ResponseEntity.ok("Logistics Coordinator Deleted Successfully");
+            }
+            else
+            {
+                return ResponseEntity.status(404).body("Logistics Coordinator Not Found");
+            }
+        }
+        catch(Exception e)
+        {
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
+    }
   
-  @GetMapping("/viewallrecipient")
-  public ResponseEntity<?> viewallrecipient()
-  {
-      try
-      {
-          List<Recipient> recipients = adminService.viewAllRecipient();
-          return ResponseEntity.ok(recipients);
-      }
-      catch(Exception e)
-      {
-          return ResponseEntity.status(500).body("Error Fetching Recipients");
-      }
-  }
+    @GetMapping("/viewallrecipient")
+    public ResponseEntity<?> viewallrecipient()
+    {
+        try
+        {
+            List<Recipient> recipients = adminService.viewAllRecipient();
+            return ResponseEntity.ok(recipients);
+        }
+        catch(Exception e)
+        {
+            return ResponseEntity.status(500).body("Error Fetching Recipients");
+        }
+    }
   
-
-  
-  @GetMapping("/viewalldonor")
-  public ResponseEntity<?> viewalldonor()
-  {
-      try
-      {
-          List<Donor> donors = adminService.viewAllDonor();
-          return ResponseEntity.ok(donors);
-      }
-      catch(Exception e)
-      {
-          return ResponseEntity.status(500).body("Error Fetching donors");
-      }
-  }
+    @GetMapping("/viewalldonor")
+    public ResponseEntity<?> viewalldonor()
+    {
+        try
+        {
+            List<Donor> donors = adminService.viewAllDonor();
+            return ResponseEntity.ok(donors);
+        }
+        catch(Exception e)
+        {
+            return ResponseEntity.status(500).body("Error Fetching donors");
+        }
+    }
 }
