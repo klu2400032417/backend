@@ -12,8 +12,8 @@ public class SwaggerConfig {
 	   {
 	        return new OpenAPI()
 	                .info(new Info()
-	                        .title("Service Management System")
+	                        .title("NeedBridge")
 	                        .version("1.0")
-	                        .description("Sample Description Here"));
+	                        .description("Donation Management System...!"));
 	    }
 }
