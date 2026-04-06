@@ -1,233 +1,225 @@
 package com.klef.springboot.entity;
 
-	import jakarta.persistence.*;
-	import java.time.LocalDate;
+import jakarta.persistence.*;
+import java.time.LocalDate;
 
-	@Entity
-	@Table(name = "recipient_table")
-	public class Recipient {
+@Entity
+@Table(name = "recipient_table")
+public class Recipient 
+{
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int recipientId;
+    
+    private String name;
+    private String email;
+    private String phoneNumber;
+    private String location;
+    private String role;
+    private String accountStatus;
 
-	    // Primary Key
-	    @Id
-	    @GeneratedValue(strategy = GenerationType.IDENTITY)
-	    private int recipientId;
+    private String itemName;
+    private String itemDescription;
+    private int quantity;
+    private String emergencyType;   // Flood / Medical / etc.
+    private String urgencyLevel;    // Low / Medium / High
 
-	    // Basic Info
-	    private String name;
-	    private String email;
-	    private String phoneNumber;
-	    private String location;
-	    private String role;
-	    private String accountStatus;
+    private String requestStatus;   // Pending / Approved / Out for Delivery / Delivered
+    private LocalDate expectedDeliveryDate;
+    private LocalDate actualDeliveryDate;
 
-	    // Request Details
-	    private String itemName;
-	    private String itemDescription;
-	    private int quantity;
-	    private String emergencyType;   // Flood / Medical / etc.
-	    private String urgencyLevel;    // Low / Medium / High
+    private int rating; // 1–5
+    private String itemCondition; // Good / Damaged
+    private String feedbackDescription;
 
-	    // Tracking
-	    private String requestStatus;   // Pending / Approved / Out for Delivery / Delivered
-	    private LocalDate expectedDeliveryDate;
-	    private LocalDate actualDeliveryDate;
+    private int totalRequests;
+    private int fulfilledRequests;
 
-	    // Feedback
-	    private int rating; // 1–5
-	    private String itemCondition; // Good / Damaged
-	    private String feedbackDescription;
+    public int getRecipientId() {
+        return recipientId;
+    }
 
-	    // Optional
-	    private int totalRequests;
-	    private int fulfilledRequests;
+    public void setRecipientId(int recipientId) {
+        this.recipientId = recipientId;
+    }
 
-	    // Getters and Setters
+    public String getName() {
+        return name;
+    }
 
-	    public int getRecipientId() {
-	        return recipientId;
-	    }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	    public void setRecipientId(int recipientId) {
-	        this.recipientId = recipientId;
-	    }
+    public String getEmail() {
+        return email;
+    }
 
-	    public String getName() {
-	        return name;
-	    }
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	    public void setName(String name) {
-	        this.name = name;
-	    }
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
 
-	    public String getEmail() {
-	        return email;
-	    }
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 
-	    public void setEmail(String email) {
-	        this.email = email;
-	    }
+    public String getLocation() {
+        return location;
+    }
 
-	    public String getPhoneNumber() {
-	        return phoneNumber;
-	    }
+    public void setLocation(String location) {
+        this.location = location;
+    }
 
-	    public void setPhoneNumber(String phoneNumber) {
-	        this.phoneNumber = phoneNumber;
-	    }
+    public String getRole() {
+        return role;
+    }
 
-	    public String getLocation() {
-	        return location;
-	    }
+    public void setRole(String role) {
+        this.role = role;
+    }
 
-	    public void setLocation(String location) {
-	        this.location = location;
-	    }
+    public String getAccountStatus() {
+        return accountStatus;
+    }
 
-	    public String getRole() {
-	        return role;
-	    }
+    public void setAccountStatus(String accountStatus) {
+        this.accountStatus = accountStatus;
+    }
 
-	    public void setRole(String role) {
-	        this.role = role;
-	    }
+    public String getItemName() {
+        return itemName;
+    }
 
-	    public String getAccountStatus() {
-	        return accountStatus;
-	    }
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
+    }
 
-	    public void setAccountStatus(String accountStatus) {
-	        this.accountStatus = accountStatus;
-	    }
+    public String getItemDescription() {
+        return itemDescription;
+    }
 
-	    public String getItemName() {
-	        return itemName;
-	    }
+    public void setItemDescription(String itemDescription) {
+        this.itemDescription = itemDescription;
+    }
 
-	    public void setItemName(String itemName) {
-	        this.itemName = itemName;
-	    }
+    public int getQuantity() {
+        return quantity;
+    }
 
-	    public String getItemDescription() {
-	        return itemDescription;
-	    }
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 
-	    public void setItemDescription(String itemDescription) {
-	        this.itemDescription = itemDescription;
-	    }
+    public String getEmergencyType() {
+        return emergencyType;
+    }
 
-	    public int getQuantity() {
-	        return quantity;
-	    }
+    public void setEmergencyType(String emergencyType) {
+        this.emergencyType = emergencyType;
+    }
 
-	    public void setQuantity(int quantity) {
-	        this.quantity = quantity;
-	    }
+    public String getUrgencyLevel() {
+        return urgencyLevel;
+    }
 
-	    public String getEmergencyType() {
-	        return emergencyType;
-	    }
+    public void setUrgencyLevel(String urgencyLevel) {
+        this.urgencyLevel = urgencyLevel;
+    }
 
-	    public void setEmergencyType(String emergencyType) {
-	        this.emergencyType = emergencyType;
-	    }
+    public String getRequestStatus() {
+        return requestStatus;
+    }
 
-	    public String getUrgencyLevel() {
-	        return urgencyLevel;
-	    }
+    public void setRequestStatus(String requestStatus) {
+        this.requestStatus = requestStatus;
+    }
 
-	    public void setUrgencyLevel(String urgencyLevel) {
-	        this.urgencyLevel = urgencyLevel;
-	    }
+    public LocalDate getExpectedDeliveryDate() {
+        return expectedDeliveryDate;
+    }
 
-	    public String getRequestStatus() {
-	        return requestStatus;
-	    }
+    public void setExpectedDeliveryDate(LocalDate expectedDeliveryDate) {
+        this.expectedDeliveryDate = expectedDeliveryDate;
+    }
 
-	    public void setRequestStatus(String requestStatus) {
-	        this.requestStatus = requestStatus;
-	    }
+    public LocalDate getActualDeliveryDate() {
+        return actualDeliveryDate;
+    }
 
-	    public LocalDate getExpectedDeliveryDate() {
-	        return expectedDeliveryDate;
-	    }
+    public void setActualDeliveryDate(LocalDate actualDeliveryDate) {
+        this.actualDeliveryDate = actualDeliveryDate;
+    }
 
-	    public void setExpectedDeliveryDate(LocalDate expectedDeliveryDate) {
-	        this.expectedDeliveryDate = expectedDeliveryDate;
-	    }
+    public int getRating() {
+        return rating;
+    }
 
-	    public LocalDate getActualDeliveryDate() {
-	        return actualDeliveryDate;
-	    }
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
 
-	    public void setActualDeliveryDate(LocalDate actualDeliveryDate) {
-	        this.actualDeliveryDate = actualDeliveryDate;
-	    }
+    public String getItemCondition() {
+        return itemCondition;
+    }
 
-	    public int getRating() {
-	        return rating;
-	    }
+    public void setItemCondition(String itemCondition) {
+        this.itemCondition = itemCondition;
+    }
 
-	    public void setRating(int rating) {
-	        this.rating = rating;
-	    }
+    public String getFeedbackDescription() {
+        return feedbackDescription;
+    }
+ public void setFeedbackDescription(String feedbackDescription) {
+        this.feedbackDescription = feedbackDescription;
+    }
 
-	    public String getItemCondition() {
-	        return itemCondition;
-	    }
+    public int getTotalRequests() {
+        return totalRequests;
+    }
 
-	    public void setItemCondition(String itemCondition) {
-	        this.itemCondition = itemCondition;
-	    }
+    public void setTotalRequests(int totalRequests) {
+        this.totalRequests = totalRequests;
+    }
 
-	    public String getFeedbackDescription() {
-	        return feedbackDescription;
-	    }
-	 public void setFeedbackDescription(String feedbackDescription) {
-	        this.feedbackDescription = feedbackDescription;
-	    }
+    public int getFulfilledRequests() {
+        return fulfilledRequests;
+    }
 
-	    public int getTotalRequests() {
-	        return totalRequests;
-	    }
+    public void setFulfilledRequests(int fulfilledRequests) {
+        this.fulfilledRequests = fulfilledRequests;
+    }
 
-	    public void setTotalRequests(int totalRequests) {
-	        this.totalRequests = totalRequests;
-	    }
+    // toString()
 
-	    public int getFulfilledRequests() {
-	        return fulfilledRequests;
-	    }
-
-	    public void setFulfilledRequests(int fulfilledRequests) {
-	        this.fulfilledRequests = fulfilledRequests;
-	    }
-
-	    // toString()
-
-	    @Override
-	    public String toString() {
-	        return "Recipient{" +
-	                "recipientId=" + recipientId +
-	                ", name='" + name + '\'' +
-	                ", email='" + email + '\'' +
-	                ", phoneNumber='" + phoneNumber + '\'' +
-	                ", location='" + location + '\'' +
-	                ", role='" + role + '\'' +
-	                ", accountStatus='" + accountStatus + '\'' +
-	                ", itemName='" + itemName + '\'' +
-	                ", itemDescription='" + itemDescription + '\'' +
-	                ", quantity=" + quantity +
-	                ", emergencyType='" + emergencyType + '\'' +
-	                ", urgencyLevel='" + urgencyLevel + '\'' +
-	                ", requestStatus='" + requestStatus + '\'' +
-	                ", expectedDeliveryDate=" + expectedDeliveryDate +
-	                ", actualDeliveryDate=" + actualDeliveryDate +
-	                ", rating=" + rating +
-	                ", itemCondition='" + itemCondition + '\'' +
-	                ", feedbackDescription='" + feedbackDescription + '\'' +
-	                ", totalRequests=" + totalRequests +
-	                ", fulfilledRequests=" + fulfilledRequests +
-	                '}';
-	    }
-	}
+    @Override
+    public String toString() {
+        return "Recipient{" +
+                "recipientId=" + recipientId +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", location='" + location + '\'' +
+                ", role='" + role + '\'' +
+                ", accountStatus='" + accountStatus + '\'' +
+                ", itemName='" + itemName + '\'' +
+                ", itemDescription='" + itemDescription + '\'' +
+                ", quantity=" + quantity +
+                ", emergencyType='" + emergencyType + '\'' +
+                ", urgencyLevel='" + urgencyLevel + '\'' +
+                ", requestStatus='" + requestStatus + '\'' +
+                ", expectedDeliveryDate=" + expectedDeliveryDate +
+                ", actualDeliveryDate=" + actualDeliveryDate +
+                ", rating=" + rating +
+                ", itemCondition='" + itemCondition + '\'' +
+                ", feedbackDescription='" + feedbackDescription + '\'' +
+                ", totalRequests=" + totalRequests +
+                ", fulfilledRequests=" + fulfilledRequests +
+                '}';
+    }
+}
 

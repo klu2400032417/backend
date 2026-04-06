@@ -22,6 +22,9 @@ public class Donor
 
    @Column(length = 50, nullable = false, unique = true)
    private String email;
+   
+   @Column(length = 100, nullable = false)
+   private String password;	
 
    @Column(length = 15)
    private String phoneNumber;
@@ -96,6 +99,14 @@ public class Donor
    public void setEmail(String email) {
       this.email = email;
    }
+   
+   public String getPassword() {
+	    return password;
+	}
+
+	public void setPassword(String password) {
+	    this.password = password;
+	}
 
    public String getPhoneNumber() {
       return phoneNumber;
@@ -196,64 +207,63 @@ public class Donor
    public String getDeliveryStatus() {
       return deliveryStatus;
    }
-
    public void setDeliveryStatus(String deliveryStatus) {
-      this.deliveryStatus = deliveryStatus;
-   }
+	      this.deliveryStatus = deliveryStatus;
+	   }
 
-   public String getDriveId() {
-      return driveId;
-   }
+	   public String getDriveId() {
+	      return driveId;
+	   }
 
-   public void setDriveId(String driveId) {
-      this.driveId = driveId;
-   }
+	   public void setDriveId(String driveId) {
+	      this.driveId = driveId;
+	   }
 
-   public boolean isParticipatingInDrive() {
-      return participatingInDrive;
-   }
+	   public boolean isParticipatingInDrive() {
+	      return participatingInDrive;
+	   }
 
-   public void setParticipatingInDrive(boolean participatingInDrive) {
-      this.participatingInDrive = participatingInDrive;
-   }
+	   public void setParticipatingInDrive(boolean participatingInDrive) {
+	      this.participatingInDrive = participatingInDrive;
+	   }
 
-   public int getTotalDonationsCount() {
-      return totalDonationsCount;
-   }
+	   public int getTotalDonationsCount() {
+	      return totalDonationsCount;
+	   }
 
-   public void setTotalDonationsCount(int totalDonationsCount) {
-      this.totalDonationsCount = totalDonationsCount;
-   }
+	   public void setTotalDonationsCount(int totalDonationsCount) {
+	      this.totalDonationsCount = totalDonationsCount;
+	   }
 
-   
-   public LocalDate getLastDonationDate() {
-      return lastDonationDate;
-   }
+	   
+	   public LocalDate getLastDonationDate() {
+	      return lastDonationDate;
+	   }
 
-   public void setLastDonationDate(LocalDate lastDonationDate) {
-      this.lastDonationDate = lastDonationDate;
-   }
+	   public void setLastDonationDate(LocalDate lastDonationDate) {
+	      this.lastDonationDate = lastDonationDate;
+	   }
 
-   @Override
-   public String toString() {
-	return "Donor [donorId=" + donorId + ", name=" + name + ", email=" + email + ", phoneNumber=" + phoneNumber
-			+ ", address=" + address + ", role=" + role + ", accountStatus=" + accountStatus + ", donationCategory="
-			+ donationCategory + ", itemName=" + itemName + ", itemDescription=" + itemDescription + ", quantity="
-			+ quantity + ", condition=" + itemcondition + ", availabilityDate=" + availabilityDate + ", expiryDate="
-			+ expiryDate + ", pickupScheduleDate=" + pickupScheduleDate + ", deliveryStatus=" + deliveryStatus
-			+ ", driveId=" + driveId + ", participatingInDrive=" + participatingInDrive + ", totalDonationsCount="
-			+ totalDonationsCount + ", lastDonationDate=" + lastDonationDate + ", getDonorId()=" + getDonorId()
-			+ ", getName()=" + getName() + ", getEmail()=" + getEmail() + ", getPhoneNumber()=" + getPhoneNumber()
-			+ ", getAddress()=" + getAddress() + ", getRole()=" + getRole() + ", getAccountStatus()="
-			+ getAccountStatus() + ", getDonationCategory()=" + getDonationCategory() + ", getItemName()="
-			+ getItemName() + ", getItemDescription()=" + getItemDescription() + ", getQuantity()=" + getQuantity()
-			+ ", getCondition()=" + getCondition() + ", getAvailabilityDate()=" + getAvailabilityDate()
-			+ ", getExpiryDate()=" + getExpiryDate() + ", getPickupScheduleDate()=" + getPickupScheduleDate()
-			+ ", getDeliveryStatus()=" + getDeliveryStatus() + ", getDriveId()=" + getDriveId()
-			+ ", isParticipatingInDrive()=" + isParticipatingInDrive() + ", getTotalDonationsCount()="
-			+ getTotalDonationsCount() + ", getLastDonationDate()=" + getLastDonationDate() + ", getClass()="
-			+ getClass() + ", hashCode()=" + hashCode() + ", toString()=" + super.toString() + "]";
-   }
+	   @Override
+	   public String toString() {
+	  return "Donor [donorId=" + donorId + ", name=" + name + ", email=" + email + ", phoneNumber=" + phoneNumber
+	      + ", address=" + address + ", role=" + role + ", accountStatus=" + accountStatus + ", donationCategory="
+	      + donationCategory + ", itemName=" + itemName + ", itemDescription=" + itemDescription + ", quantity="
+	      + quantity + ", condition=" + itemcondition + ", availabilityDate=" + availabilityDate + ", expiryDate="
+	      + expiryDate + ", pickupScheduleDate=" + pickupScheduleDate + ", deliveryStatus=" + deliveryStatus
+	      + ", driveId=" + driveId + ", participatingInDrive=" + participatingInDrive + ", totalDonationsCount="
+	      + totalDonationsCount + ", lastDonationDate=" + lastDonationDate + ", getDonorId()=" + getDonorId()
+	      + ", getName()=" + getName() + ", getEmail()=" + getEmail() + ", getPhoneNumber()=" + getPhoneNumber()
+	      + ", getAddress()=" + getAddress() + ", getRole()=" + getRole() + ", getAccountStatus()="
+	      + getAccountStatus() + ", getDonationCategory()=" + getDonationCategory() + ", getItemName()="
+	      + getItemName() + ", getItemDescription()=" + getItemDescription() + ", getQuantity()=" + getQuantity()
+	      + ", getCondition()=" + getCondition() + ", getAvailabilityDate()=" + getAvailabilityDate()
+	      + ", getExpiryDate()=" + getExpiryDate() + ", getPickupScheduleDate()=" + getPickupScheduleDate()
+	      + ", getDeliveryStatus()=" + getDeliveryStatus() + ", getDriveId()=" + getDriveId()
+	      + ", isParticipatingInDrive()=" + isParticipatingInDrive() + ", getTotalDonationsCount()="
+	      + getTotalDonationsCount() + ", getLastDonationDate()=" + getLastDonationDate() + ", getClass()="
+	      + getClass() + ", hashCode()=" + hashCode() + ", toString()=" + super.toString() + "]";
+	   }
 
-   
-}
+	   
+	}
