@@ -1,5 +1,6 @@
 package com.klef.springboot.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.klef.springboot.entity.Donor;
+import com.klef.springboot.entity.LogisticsCoordinator;
+import com.klef.springboot.entity.LogisticsDetails;
 import com.klef.springboot.entity.Recipient;
 import com.klef.springboot.service.LogisticsService;
 
@@ -18,16 +21,31 @@ public class LogisticsController
    @Autowired
    private LogisticsService logisticsService;
 
-   // ---------------- UPDATE PICKUP ----------------
+   @PostMapping("/login")
+   public ResponseEntity<?> login(@RequestBody LogisticsCoordinator coordinator)
+   {
+      LogisticsCoordinator data = logisticsService.verifyLogisticsLogin(
+            coordinator.getEmail(), coordinator.getPassword());
+
+      if (data != null) {
+         return ResponseEntity.ok(data);
+      }
+      return ResponseEntity.status(401).body("Invalid Email or Password");
+   }
+
+   // ✅ UPDATE PICKUP
    @PutMapping("/updatepickupschedule/{id}/{date}")
-   public ResponseEntity<String> updatePickup(
+   public ResponseEntity<?> updatePickup(
          @PathVariable int id,
          @PathVariable String date)
    {
       try
       {
-         String output = logisticsService.updatePickupSchedule(id, date);
-         return ResponseEntity.ok(output);
+         LocalDate pickupDate = LocalDate.parse(date);
+         LogisticsDetails result = logisticsService.updatePickupSchedule(id, pickupDate);
+
+         return (result != null) ? ResponseEntity.ok(result)
+                                : ResponseEntity.status(404).body("Logistics Not Found");
       }
       catch(Exception e)
       {
@@ -35,16 +53,18 @@ public class LogisticsController
       }
    }
 
-   // ---------------- UPDATE DELIVERY STATUS ----------------
+   // ✅ UPDATE DELIVERY STATUS
    @PutMapping("/updatedeliverystatus/{id}/{status}")
-   public ResponseEntity<String> updateStatus(
+   public ResponseEntity<?> updateStatus(
          @PathVariable int id,
          @PathVariable String status)
    {
       try
       {
-         String output = logisticsService.updateDeliveryStatus(id, status);
-         return ResponseEntity.ok(output);
+         LogisticsDetails result = logisticsService.updateDeliveryStatus(id, status);
+
+         return (result != null) ? ResponseEntity.ok(result)
+                                : ResponseEntity.status(404).body("Logistics Not Found");
       }
       catch(Exception e)
       {
@@ -52,16 +72,19 @@ public class LogisticsController
       }
    }
 
-   // ---------------- ASSIGN DRIVER ----------------
-   @PutMapping("/assigndriver/{id}/{transport}")
-   public ResponseEntity<String> assignDriver(
-         @PathVariable int id,
-         @PathVariable String transport)
+   // ✅ ASSIGN DRIVER (FIXED 🔥)
+   @PutMapping("/assigndriver/{logisticsId}/{transport}/{coordinatorId}")
+   public ResponseEntity<?> assignDriver(
+         @PathVariable int logisticsId,
+         @PathVariable String transport,
+         @PathVariable int coordinatorId)
    {
       try
       {
-         String output = logisticsService.assignDriver(id, transport);
-         return ResponseEntity.ok(output);
+         LogisticsDetails result = logisticsService.assignDriver(logisticsId, transport, coordinatorId);
+
+         return (result != null) ? ResponseEntity.ok(result)
+                                : ResponseEntity.status(404).body("Data Not Found");
       }
       catch(Exception e)
       {
@@ -69,16 +92,18 @@ public class LogisticsController
       }
    }
 
-   // ---------------- UPDATE ROUTE ----------------
+   // ✅ UPDATE ROUTE
    @PutMapping("/updateroute/{id}/{route}")
-   public ResponseEntity<String> updateRoute(
+   public ResponseEntity<?> updateRoute(
          @PathVariable int id,
          @PathVariable String route)
    {
       try
       {
-         String output = logisticsService.updateRoute(id, route);
-         return ResponseEntity.ok(output);
+         LogisticsCoordinator result = logisticsService.updateRoute(id, route);
+
+         return (result != null) ? ResponseEntity.ok(result)
+                                : ResponseEntity.status(404).body("Coordinator Not Found");
       }
       catch(Exception e)
       {
@@ -86,17 +111,19 @@ public class LogisticsController
       }
    }
 
-   // ---------------- UPDATE LOCATIONS ----------------
+   // ✅ UPDATE LOCATIONS
    @PutMapping("/updatelocations/{id}")
-   public ResponseEntity<String> updateLocations(
+   public ResponseEntity<?> updateLocations(
          @PathVariable int id,
          @RequestParam String pickup,
          @RequestParam String delivery)
    {
       try
       {
-         String output = logisticsService.updateLocations(id, pickup, delivery);
-         return ResponseEntity.ok(output);
+         LogisticsDetails result = logisticsService.updateLocations(id, pickup, delivery);
+
+         return (result != null) ? ResponseEntity.ok(result)
+                                : ResponseEntity.status(404).body("Logistics Not Found");
       }
       catch(Exception e)
       {
@@ -104,33 +131,24 @@ public class LogisticsController
       }
    }
 
-   // ---------------- VIEW DONORS ----------------
+   // ✅ VIEW DONORS
    @GetMapping("/viewdonors")
-   public ResponseEntity<?> viewDonors()
+   public ResponseEntity<List<Donor>> viewDonors()
    {
-      try
-      {
-         List<Donor> donors = logisticsService.viewAllDonors();
-         return ResponseEntity.ok(donors);
-      }
-      catch(Exception e)
-      {
-         return ResponseEntity.status(500).body("Error Fetching Donors");
-      }
+      return ResponseEntity.ok(logisticsService.viewAllDonors());
    }
 
-   // ---------------- VIEW RECIPIENTS ----------------
+   // ✅ VIEW RECIPIENTS
    @GetMapping("/viewrecipients")
-   public ResponseEntity<?> viewRecipients()
+   public ResponseEntity<List<Recipient>> viewRecipients()
    {
-      try
-      {
-         List<Recipient> recipients = logisticsService.viewAllRecipients();
-         return ResponseEntity.ok(recipients);
-      }
-      catch(Exception e)
-      {
-         return ResponseEntity.status(500).body("Error Fetching Recipients");
-      }
+      return ResponseEntity.ok(logisticsService.viewAllRecipients());
+   }
+
+   // ✅ VIEW ALL LOGISTICS
+   @GetMapping("/viewalllogistics")
+   public ResponseEntity<List<LogisticsDetails>> viewAllLogistics()
+   {
+      return ResponseEntity.ok(logisticsService.viewAllLogistics());
    }
 }

@@ -1,30 +1,38 @@
 package com.klef.springboot.service;
 
+import java.time.LocalDate;
 import java.util.List;
-import com.klef.springboot.entity.LogisticsCoordinator;
+
 import com.klef.springboot.entity.Donor;
 import com.klef.springboot.entity.Recipient;
+import com.klef.springboot.entity.LogisticsDetails;
+import com.klef.springboot.entity.LogisticsCoordinator;
 
-public interface LogisticsService 
-{
-   // Update pickup schedule
-   public String updatePickupSchedule(int id, String pickupDate);
+public interface LogisticsService {
 
-   // Update delivery status (Picked, In Transit, Delivered)
-   public String updateDeliveryStatus(int id, String status);
+    LogisticsCoordinator verifyLogisticsLogin(String email, String password);
 
-   // Assign driver / transport
-   public String assignDriver(int id, String transportType);
+    // Update pickup schedule for a logistics entry
+    LogisticsDetails updatePickupSchedule(int logisticsId, LocalDate pickupDate);
 
-   // Update route
-   public String updateRoute(int id, String route);
+    // Update delivery status (PENDING, OUT_FOR_DELIVERY, DELIVERED)
+    LogisticsDetails updateDeliveryStatus(int logisticsId, String status);
 
-   // Update pickup & delivery locations
-   public String updateLocations(int id, String pickup, String delivery);
+    // Assign driver / transport to a logistics entry
+    LogisticsDetails assignDriver(int logisticsId, String transportType, int coordinatorId);
 
-   // View donors (for pickup handling)
-   public List<Donor> viewAllDonors();
+    // Update route assigned to a logistics coordinator
+    LogisticsCoordinator updateRoute(int coordinatorId, String route);
 
-   // View recipients (for delivery handling)
-   public List<Recipient> viewAllRecipients();
+    // Update pickup & delivery locations
+    LogisticsDetails updateLocations(int logisticsId, String pickupLocation, String deliveryLocation);
+
+    // View all donors (for pickup handling)
+    List<Donor> viewAllDonors();
+
+    // View all recipients (for delivery handling)
+    List<Recipient> viewAllRecipients();
+
+    // Optional: View all logistics entries
+    List<LogisticsDetails> viewAllLogistics();
 }

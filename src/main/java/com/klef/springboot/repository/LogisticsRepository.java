@@ -5,4 +5,5 @@ import com.klef.springboot.entity.LogisticsCoordinator;
 
 public interface LogisticsRepository extends JpaRepository<LogisticsCoordinator, Integer>
 {
+    LogisticsCoordinator findByEmailAndPassword(String email, String password);
 }

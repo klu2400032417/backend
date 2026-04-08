@@ -7,16 +7,21 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.klef.springboot.entity.LogisticsCoordinator;
 import com.klef.springboot.entity.Donor;
+import com.klef.springboot.entity.LogisticsCoordinator;
+import com.klef.springboot.entity.LogisticsDetails;
 import com.klef.springboot.entity.Recipient;
-import com.klef.springboot.repository.LogisticsRepository;
 import com.klef.springboot.repository.DonorRepository;
+import com.klef.springboot.repository.LogisticsRepository;
+import com.klef.springboot.repository.LogisticsDetailsRepository;
 import com.klef.springboot.repository.RecipientRepository;
 
 @Service
-public class LogisticsServiceImpl implements LogisticsService
-{
+public class LogisticsServiceImpl implements LogisticsService {
+
+    @Autowired
+    private LogisticsDetailsRepository logisticsDetailsRepository;
+
     @Autowired
     private LogisticsRepository logisticsRepository;
 
@@ -26,103 +31,83 @@ public class LogisticsServiceImpl implements LogisticsService
     @Autowired
     private RecipientRepository recipientRepository;
 
-    // ---------------- UPDATE PICKUP ----------------
     @Override
-    public String updatePickupSchedule(int id, String pickupDate) 
-    {
-        Optional<LogisticsCoordinator> obj = logisticsRepository.findById(id);
-
-        if(obj.isPresent())
-        {
-            LogisticsCoordinator lc = obj.get();
-            
-            
-            LocalDate date = LocalDate.parse(pickupDate);
-            lc.setPickupDate(date);
-
-            logisticsRepository.save(lc);
-            return "Pickup Schedule Updated Successfully";
-        }
-        return "Coordinator Not Found";
+    public LogisticsCoordinator verifyLogisticsLogin(String email, String password) {
+        return logisticsRepository.findByEmailAndPassword(email, password);
     }
 
-    // ---------------- UPDATE DELIVERY STATUS ----------------
     @Override
-    public String updateDeliveryStatus(int id, String status) 
-    {
-        Optional<LogisticsCoordinator> obj = logisticsRepository.findById(id);
-
-        if(obj.isPresent())
-        {
-            LogisticsCoordinator lc = obj.get();
-            lc.setDeliveryStatus(status);
-            logisticsRepository.save(lc);
-            return "Delivery Status Updated Successfully";
+    public LogisticsDetails updatePickupSchedule(int logisticsId, LocalDate pickupDate) {
+        Optional<LogisticsDetails> opt = logisticsDetailsRepository.findById(logisticsId);
+        if (opt.isPresent()) {
+            LogisticsDetails logistics = opt.get();
+            logistics.setPickupDate(pickupDate);
+            return logisticsDetailsRepository.save(logistics);
         }
-        return "Coordinator Not Found";
+        return null; // or throw exception as needed
     }
 
-    // ---------------- ASSIGN DRIVER ----------------
     @Override
-    public String assignDriver(int id, String transportType) 
-    {
-        Optional<LogisticsCoordinator> obj = logisticsRepository.findById(id);
-
-        if(obj.isPresent())
-        {
-            LogisticsCoordinator lc = obj.get();
-            lc.setTransportType(transportType);
-            logisticsRepository.save(lc);
-            return "Driver Assigned Successfully";
+    public LogisticsDetails updateDeliveryStatus(int logisticsId, String status) {
+        Optional<LogisticsDetails> opt = logisticsDetailsRepository.findById(logisticsId);
+        if (opt.isPresent()) {
+            LogisticsDetails logistics = opt.get();
+            logistics.setDeliveryStatus(status);
+            return logisticsDetailsRepository.save(logistics);
         }
-        return "Coordinator Not Found";
+        return null;
     }
 
-    // ---------------- UPDATE ROUTE ----------------
     @Override
-    public String updateRoute(int id, String route) 
-    {
-        Optional<LogisticsCoordinator> obj = logisticsRepository.findById(id);
+    public LogisticsDetails assignDriver(int logisticsId, String transportType, int coordinatorId) {
+        Optional<LogisticsDetails> optLogistics = logisticsDetailsRepository.findById(logisticsId);
+        Optional<LogisticsCoordinator> optCoordinator = logisticsRepository.findById(coordinatorId);
 
-        if(obj.isPresent())
-        {
-            LogisticsCoordinator lc = obj.get();
-            lc.setAssignedRoute(route);
-            logisticsRepository.save(lc);
-            return "Route Updated Successfully";
+        if (optLogistics.isPresent() && optCoordinator.isPresent()) {
+            LogisticsDetails logistics = optLogistics.get();
+            logistics.setTransportType(transportType);
+            // Assuming LogisticsDetails has a reference to coordinator (add if missing)
+            // logistics.setCoordinator(optCoordinator.get());
+            return logisticsDetailsRepository.save(logistics);
         }
-        return "Coordinator Not Found";
+        return null;
     }
 
-    // ---------------- UPDATE LOCATIONS ----------------
     @Override
-    public String updateLocations(int id, String pickup, String delivery) 
-    {
-        Optional<LogisticsCoordinator> obj = logisticsRepository.findById(id);
-
-        if(obj.isPresent())
-        {
-            LogisticsCoordinator lc = obj.get();
-            lc.setPickupLocation(pickup);
-            lc.setDeliveryLocation(delivery);
-            logisticsRepository.save(lc);
-            return "Locations Updated Successfully";
+    public LogisticsCoordinator updateRoute(int coordinatorId, String route) {
+        Optional<LogisticsCoordinator> opt = logisticsRepository.findById(coordinatorId);
+        if (opt.isPresent()) {
+            LogisticsCoordinator coordinator = opt.get();
+            coordinator.setAssignedRoute(route);
+            return logisticsRepository.save(coordinator);
         }
-        return "Coordinator Not Found";
+        return null;
     }
 
-
-    // ---------------- VIEW DONORS ----------------
     @Override
-    public List<Donor> viewAllDonors() 
-    {
+    public LogisticsDetails updateLocations(int logisticsId, String pickupLocation, String deliveryLocation) {
+        Optional<LogisticsDetails> opt = logisticsDetailsRepository.findById(logisticsId);
+        if (opt.isPresent()) {
+            LogisticsDetails logistics = opt.get();
+            logistics.setPickupLocation(pickupLocation);
+            logistics.setDeliveryLocation(deliveryLocation);
+            return logisticsDetailsRepository.save(logistics);
+        }
+        return null;
+    }
+
+    @Override
+    public List<Donor> viewAllDonors() {
         return donorRepository.findAll();
     }
 
-    // ---------------- VIEW RECIPIENTS ----------------
     @Override
-    public List<Recipient> viewAllRecipients() 
-    {
+    public List<Recipient> viewAllRecipients() {
         return recipientRepository.findAll();
+    }
+
+    @Override
+    public List<LogisticsDetails> viewAllLogistics() {
+        return logisticsDetailsRepository.findAll();
     }
 }

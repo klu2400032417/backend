@@ -3,75 +3,83 @@ package com.klef.springboot.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.klef.springboot.entity.Recipient;
+import com.klef.springboot.entity.RequestDetails;
 import com.klef.springboot.service.RecipientService;
 
 @RestController
 @RequestMapping("/recipient")
-@CrossOrigin
+@CrossOrigin("*")
 public class RecipientController 
 {
    @Autowired
    private RecipientService recipientService;
 
-   // Register
+   // ✅ Register
    @PostMapping("/register")
-   public String register(@RequestBody Recipient recipient)
+   public ResponseEntity<String> register(@RequestBody Recipient recipient)
    {
-      return recipientService.recipientRegistration(recipient);
+      return ResponseEntity.ok(recipientService.recipientRegistration(recipient));
    }
 
-   // Login
+   // ✅ Login (FIXED)
    @PostMapping("/login")
-   public Recipient login(@RequestParam String email,
-                          @RequestParam String password)
+   public ResponseEntity<?> login(@RequestBody Recipient recipient)
    {
-      return recipientService.verifyRecipientLogin(email, password);
+      Recipient r = recipientService.verifyRecipientLogin(
+            recipient.getEmail(), recipient.getPassword());
+
+      if(r != null)
+         return ResponseEntity.ok(r);
+      else
+         return ResponseEntity.status(401).body("Invalid Login");
    }
 
-   // Update Profile
+   // ✅ Update Profile
    @PutMapping("/update")
-   public String update(@RequestBody Recipient recipient)
+   public ResponseEntity<String> update(@RequestBody Recipient recipient)
    {
-      return recipientService.updateRecipientProfile(recipient);
+      return ResponseEntity.ok(recipientService.updateRecipientProfile(recipient));
    }
 
-   // Request Item
+   // ✅ Request Item (FIXED 🔥)
    @PostMapping("/request")
-   public String requestItem(@RequestBody Recipient recipient)
+   public ResponseEntity<String> requestItem(@RequestBody RequestDetails request)
    {
-      return recipientService.requestItem(recipient);
+      return ResponseEntity.ok(recipientService.requestItem(request));
    }
 
-   // View Requests
+   // ✅ View Requests (FIXED 🔥)
    @GetMapping("/requests/{id}")
-   public List<Recipient> viewRequests(@PathVariable int id)
+   public ResponseEntity<List<RequestDetails>> viewRequests(@PathVariable int id)
    {
-      return recipientService.viewMyRequests(id);
+      return ResponseEntity.ok(recipientService.viewMyRequests(id));
    }
 
-   // Check Status
+   // ✅ Check Status
    @GetMapping("/status/{id}")
-   public String checkStatus(@PathVariable int id)
+   public ResponseEntity<String> checkStatus(@PathVariable int id)
    {
-      return recipientService.checkRequestStatus(id);
+      return ResponseEntity.ok(recipientService.checkRequestStatus(id));
    }
 
-   // Delivery Date
+   // ✅ Delivery Date
    @GetMapping("/delivery/{id}")
-   public String getDeliveryDate(@PathVariable int id)
+   public ResponseEntity<String> getDeliveryDate(@PathVariable int id)
    {
-      return recipientService.getExpectedDeliveryDate(id);
+      return ResponseEntity.ok(recipientService.getExpectedDeliveryDate(id));
    }
 
-   // Feedback
+   // ✅ Feedback (FIXED)
    @PostMapping("/feedback")
-   public String feedback(@RequestParam int id,
-                          @RequestParam int rating,
-                          @RequestParam String feedback)
+   public ResponseEntity<String> feedback(@RequestParam int id,
+                                          @RequestParam int rating,
+                                          @RequestParam String feedback)
    {
-      return recipientService.giveFeedback(id, rating, feedback);
+      return ResponseEntity.ok(
+            recipientService.giveFeedback(id, rating, feedback));
    }
 }

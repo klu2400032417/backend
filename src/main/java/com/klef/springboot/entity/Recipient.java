@@ -10,30 +10,12 @@ public class Recipient
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int recipientId;
-    
+    private String password;
     private String name;
     private String email;
     private String phoneNumber;
     private String location;
     private String role;
-    private String accountStatus;
-
-    private String itemName;
-    private String itemDescription;
-    private int quantity;
-    private String emergencyType;   // Flood / Medical / etc.
-    private String urgencyLevel;    // Low / Medium / High
-
-    private String requestStatus;   // Pending / Approved / Out for Delivery / Delivered
-    private LocalDate expectedDeliveryDate;
-    private LocalDate actualDeliveryDate;
-
-    private int rating; // 1–5
-    private String itemCondition; // Good / Damaged
-    private String feedbackDescription;
-
-    private int totalRequests;
-    private int fulfilledRequests;
 
     public int getRecipientId() {
         return recipientId;
@@ -83,143 +65,14 @@ public class Recipient
         this.role = role;
     }
 
-    public String getAccountStatus() {
-        return accountStatus;
-    }
+	public String getPassword() {
+		return password;
+	}
 
-    public void setAccountStatus(String accountStatus) {
-        this.accountStatus = accountStatus;
-    }
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
-    public String getItemName() {
-        return itemName;
-    }
-
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
-    }
-
-    public String getItemDescription() {
-        return itemDescription;
-    }
-
-    public void setItemDescription(String itemDescription) {
-        this.itemDescription = itemDescription;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    public String getEmergencyType() {
-        return emergencyType;
-    }
-
-    public void setEmergencyType(String emergencyType) {
-        this.emergencyType = emergencyType;
-    }
-
-    public String getUrgencyLevel() {
-        return urgencyLevel;
-    }
-
-    public void setUrgencyLevel(String urgencyLevel) {
-        this.urgencyLevel = urgencyLevel;
-    }
-
-    public String getRequestStatus() {
-        return requestStatus;
-    }
-
-    public void setRequestStatus(String requestStatus) {
-        this.requestStatus = requestStatus;
-    }
-
-    public LocalDate getExpectedDeliveryDate() {
-        return expectedDeliveryDate;
-    }
-
-    public void setExpectedDeliveryDate(LocalDate expectedDeliveryDate) {
-        this.expectedDeliveryDate = expectedDeliveryDate;
-    }
-
-    public LocalDate getActualDeliveryDate() {
-        return actualDeliveryDate;
-    }
-
-    public void setActualDeliveryDate(LocalDate actualDeliveryDate) {
-        this.actualDeliveryDate = actualDeliveryDate;
-    }
-
-    public int getRating() {
-        return rating;
-    }
-
-    public void setRating(int rating) {
-        this.rating = rating;
-    }
-
-    public String getItemCondition() {
-        return itemCondition;
-    }
-
-    public void setItemCondition(String itemCondition) {
-        this.itemCondition = itemCondition;
-    }
-
-    public String getFeedbackDescription() {
-        return feedbackDescription;
-    }
- public void setFeedbackDescription(String feedbackDescription) {
-        this.feedbackDescription = feedbackDescription;
-    }
-
-    public int getTotalRequests() {
-        return totalRequests;
-    }
-
-    public void setTotalRequests(int totalRequests) {
-        this.totalRequests = totalRequests;
-    }
-
-    public int getFulfilledRequests() {
-        return fulfilledRequests;
-    }
-
-    public void setFulfilledRequests(int fulfilledRequests) {
-        this.fulfilledRequests = fulfilledRequests;
-    }
-
-    // toString()
-
-    @Override
-    public String toString() {
-        return "Recipient{" +
-                "recipientId=" + recipientId +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", location='" + location + '\'' +
-                ", role='" + role + '\'' +
-                ", accountStatus='" + accountStatus + '\'' +
-                ", itemName='" + itemName + '\'' +
-                ", itemDescription='" + itemDescription + '\'' +
-                ", quantity=" + quantity +
-                ", emergencyType='" + emergencyType + '\'' +
-                ", urgencyLevel='" + urgencyLevel + '\'' +
-                ", requestStatus='" + requestStatus + '\'' +
-                ", expectedDeliveryDate=" + expectedDeliveryDate +
-                ", actualDeliveryDate=" + actualDeliveryDate +
-                ", rating=" + rating +
-                ", itemCondition='" + itemCondition + '\'' +
-                ", feedbackDescription='" + feedbackDescription + '\'' +
-                ", totalRequests=" + totalRequests +
-                ", fulfilledRequests=" + fulfilledRequests +
-                '}';
-    }
+    
 }
 

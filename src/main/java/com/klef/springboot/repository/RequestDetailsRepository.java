@@ -1,0 +1,12 @@
+package com.klef.springboot.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.klef.springboot.entity.RequestDetails;
+
+public interface RequestDetailsRepository extends JpaRepository<RequestDetails, Integer>{
+
+	List<RequestDetails> findByRecipient_RecipientId(int recipientId);
+}

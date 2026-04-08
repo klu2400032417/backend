@@ -7,86 +7,96 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.klef.springboot.entity.Recipient;
+import com.klef.springboot.entity.RequestDetails;
 import com.klef.springboot.repository.RecipientRepository;
+import com.klef.springboot.repository.RequestDetailsRepository;
 
 @Service
 public class RecipientServiceImpl implements RecipientService
 {
-   @Autowired
-   private RecipientRepository recipientRepository;
+    @Autowired
+    private RecipientRepository recipientRepository;
 
-   @Override
-   public String recipientRegistration(Recipient recipient) 
-   {
-      recipient.setRole("RECIPIENT");
-      recipient.setAccountStatus("Active");
-      recipientRepository.save(recipient);
-      return "Recipient Registered Successfully";
-   }
+    @Autowired
+    private RequestDetailsRepository requestDetailsRepository;
 
-   @Override
-   public Recipient verifyRecipientLogin(String email, String pwd) 
-   {
-      // password not in entity → ignore pwd
-      return recipientRepository.findByEmail(email);
-   }
+    // ✅ Register Recipient
+    @Override
+    public String recipientRegistration(Recipient recipient) 
+    {
+        recipient.setRole("RECIPIENT");
+        recipientRepository.save(recipient);
+        return "Recipient Registered Successfully";
+    }
 
-   @Override
-   public String updateRecipientProfile(Recipient recipient) 
-   {
-      recipientRepository.save(recipient);
-      return "Profile Updated Successfully";
-   }
+    // ✅ Login
+    @Override
+    public Recipient verifyRecipientLogin(String email, String pwd) 
+    {
+        return recipientRepository.findByEmail(email);
+    }
 
-   @Override
-   public String requestItem(Recipient recipient) 
-   {
-      recipient.setRequestStatus("Pending");
-      recipient.setExpectedDeliveryDate(LocalDate.now().plusDays(3));
-      recipientRepository.save(recipient);
-      return "Request Submitted Successfully";
-   }
+    // ✅ Update Profile
+    @Override
+    public String updateRecipientProfile(Recipient recipient) 
+    {
+        recipientRepository.save(recipient);
+        return "Profile Updated Successfully";
+    }
 
-   @Override
-   public List<Recipient> viewMyRequests(int recipientId) 
-   {
-      return recipientRepository.findByRecipientId(recipientId);
-   }
+    // ✅ Request Item
+    @Override
+    public String requestItem(RequestDetails request) 
+    {
+        request.setRequestStatus("Pending");
+        requestDetailsRepository.save(request);
+        return "Request Submitted Successfully";
+    }
 
-   @Override
-   public String checkRequestStatus(int recipientId) 
-   {
-      Recipient r = recipientRepository.findById(recipientId).orElse(null);
-      if(r != null)
-      {
-         return r.getRequestStatus();
-      }
-      return "No Request Found";
-   }
+    // ✅ View My Requests (FIXED HERE 🔥)
+    @Override
+    public List<RequestDetails> viewMyRequests(int recipientId) 
+    {
+        return requestDetailsRepository.findByRecipient_RecipientId(recipientId);
+    }
 
-   @Override
-   public String getExpectedDeliveryDate(int recipientId) 
-   {
-      Recipient r = recipientRepository.findById(recipientId).orElse(null);
-      if(r != null && r.getExpectedDeliveryDate() != null)
-      {
-         return r.getExpectedDeliveryDate().toString();
-      }
-      return "No Delivery Date Available";
-   }
+    // ✅ Check Request Status
+    @Override
+    public String checkRequestStatus(int requestId) 
+    {
+        RequestDetails request = requestDetailsRepository.findById(requestId).orElse(null);
 
-   @Override
-   public String giveFeedback(int recipientId, int rating, String feedback) 
-   {
-      Recipient r = recipientRepository.findById(recipientId).orElse(null);
-      if(r != null)
-      {
-         r.setRating(rating);
-         r.setFeedbackDescription(feedback);
-         r.setItemCondition("Good");
-         recipientRepository.save(r);
-         return "Feedback Submitted Successfully";
-      }
-      return "Recipient Not Found";
-   }
+        if(request != null)
+        {
+            return request.getRequestStatus();
+        }
+        return "No Request Found";
+    }
+
+    // ✅ Expected Delivery Date
+    @Override
+    public String getExpectedDeliveryDate(int requestId) 
+    {
+        RequestDetails request = requestDetailsRepository.findById(requestId).orElse(null);
+
+        if(request != null)
+        {
+            LocalDate expectedDate = LocalDate.now().plusDays(3);
+            return expectedDate.toString();
+        }
+        return "No Delivery Date Available";
+    }
+
+    // ✅ Feedback
+    @Override
+    public String giveFeedback(int requestId, int rating, String feedback) 
+    {
+        RequestDetails request = requestDetailsRepository.findById(requestId).orElse(null);
+
+        if(request != null)
+        {
+            return "Feedback Submitted Successfully";
+        }
+        return "Request Not Found";
+    }
 }

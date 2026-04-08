@@ -8,13 +8,22 @@ import com.klef.springboot.entity.LogisticsCoordinator;
 import com.klef.springboot.entity.Recipient;
 
 public interface AdminService {
-  public Admin verifyAdminLogin(String username,String password);
     
-    public String addLogisticsCoordinator(LogisticsCoordinator lc);
-    public List<LogisticsCoordinator> viewAllLogisticsCoordinator();
-    public boolean deleteLogisticsCoordinator(int id);
-    
-    public List<Recipient> viewAllRecipient();
-    public List<Donor> viewAllDonor();
-    
+    // Verify admin login by username and password
+    Admin verifyAdminLogin(String username, String password);
+
+    // Add a new logistics coordinator
+    LogisticsCoordinator addLogisticsCoordinator(LogisticsCoordinator lc);
+
+    // View all logistics coordinators
+    List<LogisticsCoordinator> viewAllLogisticsCoordinator();
+
+    // Delete a logistics coordinator by ID
+    boolean deleteLogisticsCoordinator(int id);
+
+    // View all recipients
+    List<Recipient> viewAllRecipient();
+
+    // View all donors
+    List<Donor> viewAllDonor();
 }

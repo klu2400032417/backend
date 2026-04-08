@@ -4,14 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import com.klef.springboot.entity.Admin;
 import com.klef.springboot.entity.Donor;
@@ -24,25 +17,26 @@ import com.klef.springboot.service.AdminService;
 @CrossOrigin("*")
 public class AdminController 
 {
-	@Autowired
+    @Autowired
     private AdminService adminService;
-  
+
     @GetMapping("/")
     public String index()
     {
         return "Full Stack SDP Project";
     }
-  
+
+    // ✅ Admin Login
     @PostMapping("/login")
     public ResponseEntity<?> checkadminlogin(@RequestBody Admin admin)
     {
         try
         {
             Admin a = adminService.verifyAdminLogin(admin.getUsername(), admin.getPassword());
-    
-            if(a!=null)
+
+            if(a != null)
             {
-                return ResponseEntity.status(200).body(admin);
+                return ResponseEntity.ok(a);   // ✅ return actual admin
             }
             else
             {
@@ -51,25 +45,26 @@ public class AdminController
         }
         catch (Exception e) 
         {
-            System.out.println(e.getMessage());
             return ResponseEntity.status(500).body("Internal Server Error");
         }
     }
-  
+
+    // ✅ Add Logistics Coordinator (FIXED)
     @PostMapping("/addlogisticcoordinator")
-    public ResponseEntity<String> addlogisticcoordinator(@RequestBody LogisticsCoordinator coord)
+    public ResponseEntity<?> addlogisticcoordinator(@RequestBody LogisticsCoordinator coord)
     {
         try
         {
-            String output = adminService.addLogisticsCoordinator(coord);
-            return ResponseEntity.status(201).body(output);
+            LogisticsCoordinator saved = adminService.addLogisticsCoordinator(coord);
+            return ResponseEntity.status(201).body(saved);
         }
         catch(Exception e)
         {
             return ResponseEntity.status(500).body("Internal Server Error");
         }
     }
-  
+
+    // ✅ View All Logistics Coordinators
     @GetMapping("/viewalllogisticscoordinator")
     public ResponseEntity<?> viewalllogisticscoordinator()
     {
@@ -83,7 +78,8 @@ public class AdminController
             return ResponseEntity.status(500).body("Error Fetching Logistic Coordinator");
         }
     }
-  
+
+    // ✅ Delete Logistics Coordinator
     @DeleteMapping("/deletelogisticscoordinator/{id}")
     public ResponseEntity<String> deletelogisticscoordinator(@PathVariable int id)
     {
@@ -102,10 +98,11 @@ public class AdminController
         }
         catch(Exception e)
         {
-            return ResponseEntity.status(500).body(e.getMessage());
+            return ResponseEntity.status(500).body("Internal Server Error");
         }
     }
-  
+
+    // ✅ View All Recipients
     @GetMapping("/viewallrecipient")
     public ResponseEntity<?> viewallrecipient()
     {
@@ -119,7 +116,8 @@ public class AdminController
             return ResponseEntity.status(500).body("Error Fetching Recipients");
         }
     }
-  
+
+    // ✅ View All Donors
     @GetMapping("/viewalldonor")
     public ResponseEntity<?> viewalldonor()
     {
@@ -130,7 +128,7 @@ public class AdminController
         }
         catch(Exception e)
         {
-            return ResponseEntity.status(500).body("Error Fetching donors");
+            return ResponseEntity.status(500).body("Error Fetching Donors");
         }
     }
 }
